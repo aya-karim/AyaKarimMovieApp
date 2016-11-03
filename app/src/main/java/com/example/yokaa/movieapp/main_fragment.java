@@ -2,12 +2,15 @@ package com.example.yokaa.movieapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +41,7 @@ public class main_fragment extends Fragment {
     // TODO: Rename and change types of parameters
 
     jasonMovieObj JMovie;
+    String sort= "popular";
 
     List<jasonMovieObj> jMoviesList;
     public main_fragment() {
@@ -52,16 +56,43 @@ public class main_fragment extends Fragment {
 
 
     movieAdapter MovieAdapt;
-
+    FetchMovies fetch;
     GridView MoviesListGV;
     View v;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
 
     }
+    public boolean isNetworkAvailable(final Context context) {
+        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu,menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+       if (item.getItemId()==R.id.popular)
+       {
+           sort="popular";
+           new FetchMovies().execute(sort);
+
+       }
+        else if (item.getItemId()==R.id.TopRated)
+       {
+           sort="top_rated";
+           new FetchMovies().execute(sort);
+       }
+                return super.onOptionsItemSelected(item);
+        }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,11 +101,13 @@ public class main_fragment extends Fragment {
 
 
         v = inflater.inflate(R.layout.fragment_main_fragment, container, false);
-
-        FetchMovies fetch = new FetchMovies();
-        fetch.execute();
-
-
+        if (isNetworkAvailable(getActivity())==true)
+        {
+            fetch = new FetchMovies();
+            fetch.execute(sort);
+        }
+        else
+        Toast.makeText(getActivity(),"No network Availale",Toast.LENGTH_LONG).show();
 
         return v;
     }
@@ -93,8 +126,12 @@ public class main_fragment extends Fragment {
                 // Construct the URL for the OpenWeatherMap query
                 // Possible parameters are available at OWM's forecast API page, at
                 // http://openweathermap.org/API#forecast
-                URL url = new URL("http://api.themoviedb.org/3/movie/popular?api_key=d751b799766ad8a466932e14190daf8a");
-
+                   // URL url = new URL("http://api.themoviedb.org/3/movie/popular?api_key=d751b799766ad8a466932e14190daf8a");
+                final String BaseUrl = "http://api.themoviedb.org/3/movie/";
+                final  String ApiKey = "api_key";
+                Uri builder = Uri.parse(BaseUrl).buildUpon().appendPath(params[0])
+                        .appendQueryParameter(ApiKey,BuildConfig.TheMovieDataBaseKey).build();
+                URL url= new URL(builder.toString());
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -137,7 +174,8 @@ public class main_fragment extends Fragment {
                     JSONObject jsonObject= hh.getJSONObject(i);
                     //jsonObject.getString("");
                     JMovie= new jasonMovieObj();
-                    JMovie.imgPath= jsonObject.getString("poster_path");
+                    JMovie.imgPath="http://image.tmdb.org/t/p/w342"+ jsonObject.getString("poster_path");
+                    //JMovie.imgPath="http://image.tmdb.org/t/p/w185/9M5ibpQUjoVFjjnP2AdLcof4hAk.jpg";
                     JMovie.overView=jsonObject.getString("overview");
                     JMovie.releaseDate= jsonObject.getString("release_date");
                     JMovie.movieTitle=jsonObject.getString("original_title");
@@ -161,6 +199,7 @@ public class main_fragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<jasonMovieObj> MoviesList) {
+
             MovieAdapt = new movieAdapter(getActivity(),MoviesList);
             MoviesListGV =  (GridView)v.findViewById(R.id.movieGridView);
             MoviesListGV.setAdapter(MovieAdapt);
@@ -172,10 +211,10 @@ public class main_fragment extends Fragment {
                     Bundle movieBundle = new Bundle();
 
                     int movieIndex = position;
-                    movieBundle.putCharArray("movieTitle",jMoviesList.get(movieIndex).movieTitle.toCharArray());
-                    movieBundle.putCharArray("releaseDate",jMoviesList.get(movieIndex).releaseDate.toCharArray());
-                    movieBundle.putCharArray("overView",jMoviesList.get(movieIndex).overView.toCharArray());
-                    movieBundle.putCharArray("imgPath",jMoviesList.get(movieIndex).imgPath.toCharArray());
+                    movieBundle.putString("movieTitle",jMoviesList.get(movieIndex).movieTitle);
+                    movieBundle.putString("releaseDate",jMoviesList.get(movieIndex).releaseDate);
+                    movieBundle.putString("overView",jMoviesList.get(movieIndex).overView);
+                    movieBundle.putString("imgPath",jMoviesList.get(movieIndex).imgPath);
                     movieBundle.putInt("userRating",jMoviesList.get(movieIndex).userRating);
                     Intent i = new Intent(getActivity(), DetailActivity.class).putExtra("movie",movieBundle);
 
@@ -190,9 +229,9 @@ public class main_fragment extends Fragment {
 
 
 
+
+
     }
-
-
 
 
 

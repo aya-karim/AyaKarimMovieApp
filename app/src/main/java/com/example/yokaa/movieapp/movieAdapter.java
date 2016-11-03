@@ -1,6 +1,7 @@
 package com.example.yokaa.movieapp;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,9 +51,10 @@ public class movieAdapter extends BaseAdapter {
 
 
         ImageView MovieImageView = (ImageView)convertView.findViewById(R.id.movieImageView);
-        Picasso.with(currentContext).load(MoviesBlaa.get(position).imgPath).fit().into(MovieImageView);
-        TextView MovieTitle = (TextView)convertView.findViewById(R.id.movieNameTxtView);
-        MovieTitle.setText(MoviesBlaa.get(position).movieTitle);
+        Picasso.with(currentContext).load(MoviesBlaa.get(position).imgPath).into(MovieImageView);
+        Log.i("info", MoviesBlaa.get(position).imgPath);
+        //TextView MovieTitle = (TextView)convertView.findViewById(R.id.movieNameTxtView);
+        //MovieTitle.setText(MoviesBlaa.get(position).movieTitle);
 
         return convertView;
     }

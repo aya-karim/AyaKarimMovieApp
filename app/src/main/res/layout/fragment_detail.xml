@@ -7,18 +7,14 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@android:color/holo_orange_light"
+        android:layout_width="200dp"
+        android:layout_height="250dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="46dp"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="41dp"
-        android:id="@+id/imageView" />
+        android:id="@+id/imageView"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:text="MovieTitle"
@@ -27,39 +23,35 @@
         android:layout_below="@+id/imageView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="20dp"
         android:id="@+id/txtMovieTitle" />
 
     <TextView
         android:text="ReleaseDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
-        android:layout_toRightOf="@+id/txtMovieTitle"
-        android:layout_toEndOf="@+id/txtMovieTitle"
+        android:layout_toRightOf="@+id/imageView"
         android:layout_marginLeft="15dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
         android:id="@+id/txtReleasDate" />
 
     <TextView
-        android:text="VotingRate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/imageView"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/txtReleasDate"
-        android:layout_alignLeft="@+id/txtReleasDate"
-        android:layout_alignStart="@+id/txtReleasDate"
-        android:layout_marginTop="35dp"
         android:id="@+id/txtVotingRate" />
 
     <TextView
         android:text="OverView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtMovieTitle"
-        android:layout_toLeftOf="@+id/txtVotingRate"
-        android:layout_toStartOf="@+id/txtVotingRate"
-        android:layout_marginTop="41dp"
+        android:layout_marginTop="20dp"
         android:id="@+id/txtOverView" />
 
 

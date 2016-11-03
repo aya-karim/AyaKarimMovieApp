@@ -63,7 +63,7 @@ public class DetailFragment extends Fragment {
             movieTitle.setText(movie.movieTitle);
             releaseDate.setText(movie.releaseDate);
             overView.setText( movie.overView);
-            movieRating.setText(movie.userRating);
+            movieRating.setText(String.valueOf(movie.userRating));
         }
         return rootView;
     }

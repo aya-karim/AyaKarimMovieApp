@@ -5,22 +5,21 @@
     android:layout_height="match_parent">
 
 
-    <TextView
+   <!-- <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/movieNameTxtView"
         android:layout_marginTop="17dp"
-        android:textColor="@color/colorPrimaryDark"/>
+        android:textColor="@color/colorPrimaryDark"/>  -->
+
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@android:color/holo_blue_bright"
-        android:layout_below="@+id/movieNameTxtView"
-        android:layout_toRightOf="@+id/movieNameTxtView"
-        android:layout_toEndOf="@+id/movieNameTxtView"
-        android:layout_marginLeft="63dp"
-        android:layout_marginStart="63dp"
-        android:id="@+id/movieImageView" />
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:id="@+id/movieImageView"
+        android:scaleType="centerCrop"
+        android:padding=".2dp"
+        android:layout_margin=".2dp"
+        />
 
 </RelativeLayout>
