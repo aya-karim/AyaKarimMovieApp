@@ -2,6 +2,7 @@ package com.example.yokaa.movieapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -19,11 +20,9 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -59,6 +58,8 @@ public class main_fragment extends Fragment {
     FetchMovies fetch;
     GridView MoviesListGV;
     View v;
+    dbHelper mfavoriteListDB;
+    jasonMovieObj mFavoriteMovie;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,6 +91,34 @@ public class main_fragment extends Fragment {
        {
            sort="top_rated";
            new FetchMovies().execute(sort);
+       }
+        else  if (item.getItemId()==R.id.FavoriteList)
+       {
+           jMoviesList= new ArrayList<jasonMovieObj>();
+           mfavoriteListDB = new dbHelper(getContext());
+           Cursor mCursor = mfavoriteListDB.getAllData(); //getting Data from db
+           int numOfRecords = mCursor.getCount();
+           for(int i =0 ;i <numOfRecords; i++ )
+           {
+               mFavoriteMovie = new jasonMovieObj();
+               mFavoriteMovie.movieTitle=mCursor.getString(1);
+               mFavoriteMovie.imgPath=mCursor.getString(3);
+               mFavoriteMovie.overView=mCursor.getString(2);
+               mFavoriteMovie.releaseDate= mCursor.getString(4);
+
+               try {
+                   mFavoriteMovie.userRating= Integer.parseInt(mCursor.getString(5));
+
+                   jMoviesList.add(mFavoriteMovie);
+               }catch (Exception e)
+               {
+                   Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+               }
+           }
+           MovieAdapt = new movieAdapter(getActivity(),jMoviesList);
+           MoviesListGV =  (GridView)v.findViewById(R.id.movieGridView);
+           MoviesListGV.setAdapter(MovieAdapt);
+
        }
                 return super.onOptionsItemSelected(item);
         }

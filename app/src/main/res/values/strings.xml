@@ -80,4 +80,6 @@
     <string name="title_activity_main_list">MainList</string>
     <string name="popular">popular</string>
     <string name="topRated">top Rated</string>
+    <string name="FavoriteList">Favorite List</string>
+    <string name="favorite">favorite</string>
 </resources>
