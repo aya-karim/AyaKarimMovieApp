@@ -14,6 +14,7 @@ public class FavoriteList {
     public static final String MOVIE_IMAGEPATH = "imgPath";
     public static final String MOVIE_RELEASEDATE = "releaseDate";
     public static final String MOVIE_USERRATING = "userRating";
+    public static final String MOVIE_JASONID = "jasonID";
 
 
 
@@ -21,5 +22,5 @@ public class FavoriteList {
     public static final String CREATE_TABLE_MOVIES = "create table " + TABLE_Movies +
             "(" + MOVIE_ID + " integer primary key autoincrement, " + MOVIE_TITLE
             + " text, " + MOVIE_OVERVIEW + " text, "+
-            MOVIE_IMAGEPATH + " text, "+ MOVIE_RELEASEDATE + " text, "+ MOVIE_USERRATING + " text)";
+            MOVIE_IMAGEPATH + " text, "+ MOVIE_RELEASEDATE + " text, "+ MOVIE_USERRATING + " text, "+ MOVIE_JASONID + " text)";
 }

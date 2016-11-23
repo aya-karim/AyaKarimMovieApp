@@ -105,15 +105,18 @@ public class main_fragment extends Fragment {
                mFavoriteMovie.imgPath=mCursor.getString(3);
                mFavoriteMovie.overView=mCursor.getString(2);
                mFavoriteMovie.releaseDate= mCursor.getString(4);
+               mFavoriteMovie.userRating = Integer.parseInt(mCursor.getString(5));
 
-               try {
-                   mFavoriteMovie.userRating= Integer.parseInt(mCursor.getString(5));
-
-                   jMoviesList.add(mFavoriteMovie);
-               }catch (Exception e)
-               {
-                   Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
-               }
+               jMoviesList.add(mFavoriteMovie);
+               mCursor.moveToNext();
+//               try {
+//                   mFavoriteMovie.userRating= Integer.parseInt(mCursor.getString(5));
+//
+//                   jMoviesList.add(mFavoriteMovie);
+//               }catch (Exception e)
+//               {
+//                   Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+//               }
            }
            MovieAdapt = new movieAdapter(getActivity(),jMoviesList);
            MoviesListGV =  (GridView)v.findViewById(R.id.movieGridView);
@@ -209,10 +212,11 @@ public class main_fragment extends Fragment {
                     JMovie.releaseDate= jsonObject.getString("release_date");
                     JMovie.movieTitle=jsonObject.getString("original_title");
                     JMovie.userRating = jsonObject.getInt("vote_average");
+                    JMovie.id=jsonObject.getInt("id");
 
                     jMoviesList.add(JMovie);
                 }
-                //Toast.makeText(getActivity(), jMoviesList.size(), Toast.LENGTH_LONG).show();
+             //   Toast.makeText(getActivity(), jMoviesList.size(), Toast.LENGTH_LONG).show();
                 return jMoviesList;
             } catch (Exception e) {
                 Log.e( "ForeCastFragment", "Error ", e);
@@ -245,7 +249,9 @@ public class main_fragment extends Fragment {
                     movieBundle.putString("overView",jMoviesList.get(movieIndex).overView);
                     movieBundle.putString("imgPath",jMoviesList.get(movieIndex).imgPath);
                     movieBundle.putInt("userRating",jMoviesList.get(movieIndex).userRating);
+                    movieBundle.putInt("id",jMoviesList.get(movieIndex).id);
                     Intent i = new Intent(getActivity(), DetailActivity.class).putExtra("movie",movieBundle);
+
 
                    // i.putExtra("movieInfo", movieBundle);
                     startActivity(i);

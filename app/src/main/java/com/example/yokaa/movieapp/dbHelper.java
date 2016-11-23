@@ -14,8 +14,9 @@ import android.util.Log;
 public class dbHelper extends SQLiteOpenHelper {
 
     public static FavoriteList mDatabaseFavoriteList = new FavoriteList();
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 6;
     SQLiteDatabase mSQLiteDatabase;
+
     jasonMovieObj movieObj = new jasonMovieObj();
 
     public dbHelper(Context context) {
@@ -24,7 +25,13 @@ public class dbHelper extends SQLiteOpenHelper {
     }
 
     public  void  setMovie (jasonMovieObj movie){
-        movieObj= movie;
+        //movieObj= movie;
+        movieObj.setId(movie.id);
+        movieObj.setUserRating(movie.userRating);
+        movieObj.setImgPath(movie.imgPath);
+        movieObj.setMovieTitle(movie.movieTitle);
+        movieObj.setReleaseDate(movie.releaseDate);
+        movieObj.setOverView(movie.overView);
     }
 
     @Override
@@ -39,12 +46,13 @@ public class dbHelper extends SQLiteOpenHelper {
         mSQLiteDatabase = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         String userRating=String.valueOf(movieObj.userRating);
-
+        String movieid=String.valueOf(movieObj.id);
         contentValues.put(mDatabaseFavoriteList.MOVIE_TITLE,movieObj.movieTitle);
         contentValues.put(mDatabaseFavoriteList.MOVIE_OVERVIEW,movieObj.overView);
         contentValues.put(mDatabaseFavoriteList.MOVIE_IMAGEPATH,movieObj.imgPath);
         contentValues.put(mDatabaseFavoriteList.MOVIE_RELEASEDATE,movieObj.releaseDate);
         contentValues.put(mDatabaseFavoriteList.MOVIE_USERRATING,userRating);
+        contentValues.put(mDatabaseFavoriteList.MOVIE_JASONID,movieid);
 //
 //        public static final String MOVIE_TITLE = "name";
 //        public static final String MOVIE_OVERVIEW = "overView";
@@ -61,6 +69,7 @@ public class dbHelper extends SQLiteOpenHelper {
 
 
    //     mSQLiteDatabase.rawQuery(insertQuery,null);
+
         mSQLiteDatabase.insert(mDatabaseFavoriteList.TABLE_Movies,null,contentValues);
         String u = "Done!";
         return u;
@@ -68,7 +77,7 @@ public class dbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table " + mDatabaseFavoriteList.TABLE_Movies + " if exists");
+        db.execSQL("drop table if exists " + mDatabaseFavoriteList.TABLE_Movies );
         onCreate(db);
     }
 

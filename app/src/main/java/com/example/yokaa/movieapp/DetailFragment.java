@@ -96,6 +96,8 @@ public class DetailFragment extends Fragment {
         {
             mFavoriteMovie=movie;
             mDataBaseHelper = new dbHelper(getContext());
+
+
             mDataBaseHelper.setMovie(mFavoriteMovie);
 
             try {
@@ -107,7 +109,7 @@ public class DetailFragment extends Fragment {
             }catch (Exception e)
             {
                 Toast.makeText(getActivity(),"Couldn't Add Movie", Toast.LENGTH_SHORT).show();
-                Log.i("mashta3'alsh","mashta3'alsh");
+                Log.i("mashta3'alsh",e.getMessage());
             }
         }
         else
