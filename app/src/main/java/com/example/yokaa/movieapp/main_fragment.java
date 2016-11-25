@@ -19,6 +19,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.example.yokaa.movieapp.DataBase.dbHelper;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -42,7 +44,7 @@ public class main_fragment extends Fragment {
     jasonMovieObj JMovie;
     String sort= "popular";
 
-    List<jasonMovieObj> jMoviesList;
+    ArrayList<jasonMovieObj> jMoviesList;
     public main_fragment() {
         // Required empty public constructor
     }
@@ -60,6 +62,12 @@ public class main_fragment extends Fragment {
     View v;
     dbHelper mfavoriteListDB;
     jasonMovieObj mFavoriteMovie;
+    DataListener mDataListener;
+
+    public void setmDataListener (DataListener listener)
+    {
+        this.mDataListener=listener;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -240,21 +248,22 @@ public class main_fragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
-                    Bundle movieBundle = new Bundle();
-
-                    int movieIndex = position;
-                    movieBundle.putString("movieTitle",jMoviesList.get(movieIndex).movieTitle);
-                    movieBundle.putString("releaseDate",jMoviesList.get(movieIndex).releaseDate);
-                    movieBundle.putString("overView",jMoviesList.get(movieIndex).overView);
-                    movieBundle.putString("imgPath",jMoviesList.get(movieIndex).imgPath);
-                    movieBundle.putInt("userRating",jMoviesList.get(movieIndex).userRating);
-                    movieBundle.putInt("id",jMoviesList.get(movieIndex).id);
-                    Intent i = new Intent(getActivity(), DetailActivity.class).putExtra("movie",movieBundle);
+//
+//                    Bundle movieBundle = new Bundle();
+//
+//                    int movieIndex = position;
+//                    movieBundle.putString("movieTitle",jMoviesList.get(movieIndex).movieTitle);
+//                    movieBundle.putString("releaseDate",jMoviesList.get(movieIndex).releaseDate);
+//                    movieBundle.putString("overView",jMoviesList.get(movieIndex).overView);
+//                    movieBundle.putString("imgPath",jMoviesList.get(movieIndex).imgPath);
+//                    movieBundle.putInt("userRating",jMoviesList.get(movieIndex).userRating);
+//                    movieBundle.putInt("id",jMoviesList.get(movieIndex).id);
+//                    Intent i = new Intent(getActivity(), DetailActivity.class).putExtra("movie",movieBundle);
 
 
                    // i.putExtra("movieInfo", movieBundle);
-                    startActivity(i);
+                    //startActivity(i);
+                    mDataListener.setData(jMoviesList , position);
 
                 }
             });

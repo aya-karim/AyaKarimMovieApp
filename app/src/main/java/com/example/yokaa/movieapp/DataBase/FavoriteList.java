@@ -1,4 +1,4 @@
-package com.example.yokaa.movieapp;
+package com.example.yokaa.movieapp.DataBase;
 
 /**
  * Created by yokaa on 11/11/16.

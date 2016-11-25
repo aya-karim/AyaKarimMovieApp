@@ -1,9 +1,7 @@
 package com.example.yokaa.movieapp;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,14 +11,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yokaa.movieapp.DataBase.dbHelper;
 import com.squareup.picasso.Picasso;
 
 
 public class DetailFragment extends Fragment {
+
+
+
+    @SuppressLint("ValidFragment")
+    public DetailFragment(Bundle bundle) {
+        this.bundle=bundle;
+    }
 
 
     public DetailFragment() {
@@ -28,10 +35,9 @@ public class DetailFragment extends Fragment {
     }
 
 
-
     // TODO: Rename and change types and number of parameters
 
-    Bundle bundle = new Bundle();
+    Bundle bundle;
     jasonMovieObj movie = new jasonMovieObj();
     jasonMovieObj mFavoriteMovie = new jasonMovieObj();
     dbHelper mDataBaseHelper;
@@ -40,6 +46,7 @@ public class DetailFragment extends Fragment {
     TextView releaseDate ;
     TextView overView ;
     TextView movieRating ;
+    Button AddToFavorite;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,10 +62,8 @@ public class DetailFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-        Intent intent = getActivity().getIntent();
-        if (intent != null && intent.hasExtra("movie"))
+        if (bundle != null)
         {
-            bundle=intent.getBundleExtra("movie");
             movie.userRating=bundle.getInt("userRating");
             movie.imgPath=bundle.get("imgPath").toString();
             movie.overView=bundle.get("overView").toString();
@@ -77,6 +82,30 @@ public class DetailFragment extends Fragment {
             releaseDate.setText(movie.releaseDate);
             overView.setText( movie.overView);
             movieRating.setText(String.valueOf(movie.userRating));
+
+            AddToFavorite=(Button)rootView.findViewById(R.id.AddToFavorite);
+            AddToFavorite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+            mFavoriteMovie=movie;
+            mDataBaseHelper = new dbHelper(getContext());
+
+
+            mDataBaseHelper.setMovie(mFavoriteMovie);
+
+            try {
+                String i = mDataBaseHelper.insertMovie();
+                Toast.makeText(getActivity(),"Movie Added to your favorites", Toast.LENGTH_LONG).show();
+                Log.i("eshta3'al",i);
+
+
+            }catch (Exception e)
+            {
+                Toast.makeText(getActivity(),"Couldn't Add Movie", Toast.LENGTH_SHORT).show();
+                Log.i("mashta3'alsh",e.getMessage());
+            }
+                }
+            });
         }
         return rootView;
     }
@@ -94,23 +123,23 @@ public class DetailFragment extends Fragment {
 
         if (item.getItemId()== R.id.AddToFavorite)
         {
-            mFavoriteMovie=movie;
-            mDataBaseHelper = new dbHelper(getContext());
-
-
-            mDataBaseHelper.setMovie(mFavoriteMovie);
-
-            try {
-                String i = mDataBaseHelper.insertMovie();
-             Toast.makeText(getActivity(),"Movie Added to your favorites", Toast.LENGTH_LONG).show();
-              Log.i("eshta3'al",i);
-
-
-            }catch (Exception e)
-            {
-                Toast.makeText(getActivity(),"Couldn't Add Movie", Toast.LENGTH_SHORT).show();
-                Log.i("mashta3'alsh",e.getMessage());
-            }
+//            mFavoriteMovie=movie;
+//            mDataBaseHelper = new dbHelper(getContext());
+//
+//
+//            mDataBaseHelper.setMovie(mFavoriteMovie);
+//
+//            try {
+//                String i = mDataBaseHelper.insertMovie();
+//             Toast.makeText(getActivity(),"Movie Added to your favorites", Toast.LENGTH_LONG).show();
+//              Log.i("eshta3'al",i);
+//
+//
+//            }catch (Exception e)
+//            {
+//                Toast.makeText(getActivity(),"Couldn't Add Movie", Toast.LENGTH_SHORT).show();
+//                Log.i("mashta3'alsh",e.getMessage());
+//            }
         }
         else
             Toast.makeText(getContext(),"Nothing Selected", Toast.LENGTH_SHORT).show();

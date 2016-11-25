@@ -1,5 +1,6 @@
 package com.example.yokaa.movieapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -43,6 +44,15 @@ public class ReviewsFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("ValidFragment")
+    public ReviewsFragment(Bundle bundle) {
+        this.bundle=bundle;
+    }
+
+    public ReviewsFragment()
+    {
+
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,8 +61,6 @@ public class ReviewsFragment extends Fragment {
         recyclerView = (RecyclerView)rootView.findViewById(R.id.ReviewsList);
 
 
-        Intent intent = getActivity().getIntent();
-        bundle=intent.getBundleExtra("movie");
         int movieID = bundle.getInt("id");
         RequestQueue requestQueue=VolleySingletone.getInstance().getmRequestQueue();
         StringRequest request = new StringRequest(Request.Method.GET, "http://api.themoviedb.org/3/movie/" + movieID + "/reviews?api_key=d751b799766ad8a466932e14190daf8a", new Response.Listener<String>() {

@@ -1,5 +1,6 @@
 package com.example.yokaa.movieapp;
 
+import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -47,14 +48,17 @@ public class TrailersFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("ValidFragment")
+    public TrailersFragment(Bundle bundle) {
+        this.bundle=bundle;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.trailers_fragment, container, false);
         recyclerView = (RecyclerView)rootView.findViewById(R.id.trailerList);
 
-        Intent intent = getActivity().getIntent();
-        bundle=intent.getBundleExtra("movie");
         int movieID = bundle.getInt("id");
         RequestQueue requestQueue=VolleySingletone.getInstance().getmRequestQueue();
         //http://api.themoviedb.org/3/movie/{id}/videos?api_key=d751b799766ad8a466932e14190daf8a
