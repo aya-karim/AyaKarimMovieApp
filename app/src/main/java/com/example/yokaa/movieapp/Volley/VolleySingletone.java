@@ -1,6 +1,4 @@
-package com.example.yokaa.movieapp;
-
-import android.app.Application;
+package com.example.yokaa.movieapp.Volley;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;

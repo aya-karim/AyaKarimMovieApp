@@ -1,4 +1,4 @@
-package com.example.yokaa.movieapp;
+package com.example.yokaa.movieapp.MovieDetails;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yokaa.movieapp.DataBase.dbHelper;
+import com.example.yokaa.movieapp.R;
+import com.example.yokaa.movieapp.jasonMovieObj;
 import com.squareup.picasso.Picasso;
 
 
@@ -122,6 +124,7 @@ public class DetailFragment extends Fragment {
                     mDataBaseHelper.setMovie(mFavoriteMovie);
                     try {
                         mDataBaseHelper.deleteMovie();
+                        Toast.makeText(getActivity(),"Movie Removed From favorits",Toast.LENGTH_SHORT).show();
 
                     }catch (Exception e){
                         Toast.makeText(getActivity(),"Couldn't Remove Movie", Toast.LENGTH_SHORT).show();

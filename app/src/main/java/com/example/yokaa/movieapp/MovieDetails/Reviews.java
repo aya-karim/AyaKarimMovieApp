@@ -1,4 +1,4 @@
-package com.example.yokaa.movieapp;
+package com.example.yokaa.movieapp.MovieDetails;
 
 /**
  * Created by yokaa on 11/19/16.

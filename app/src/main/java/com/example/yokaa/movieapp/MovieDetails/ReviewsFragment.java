@@ -1,7 +1,6 @@
-package com.example.yokaa.movieapp;
+package com.example.yokaa.movieapp.MovieDetails;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,8 +16,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.yokaa.movieapp.RecyclerViewFolder.RecyclerViewAdapter;
+import com.example.yokaa.movieapp.R;
 import com.example.yokaa.movieapp.RecyclerViewFolder.ReviewsRecyclerViewAdapter;
+import com.example.yokaa.movieapp.Volley.VolleySingletone;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,7 +62,7 @@ public class ReviewsFragment extends Fragment {
 
 
         int movieID = bundle.getInt("id");
-        RequestQueue requestQueue=VolleySingletone.getInstance().getmRequestQueue();
+        RequestQueue requestQueue= VolleySingletone.getInstance().getmRequestQueue();
         StringRequest request = new StringRequest(Request.Method.GET, "http://api.themoviedb.org/3/movie/" + movieID + "/reviews?api_key=d751b799766ad8a466932e14190daf8a", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

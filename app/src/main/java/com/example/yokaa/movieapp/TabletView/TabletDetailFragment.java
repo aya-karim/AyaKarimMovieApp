@@ -1,4 +1,4 @@
-package com.example.yokaa.movieapp;
+package com.example.yokaa.movieapp.TabletView;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +8,11 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.yokaa.movieapp.MovieDetails.DetailFragment;
+import com.example.yokaa.movieapp.MovieDetails.ReviewsFragment;
+import com.example.yokaa.movieapp.MovieDetails.TrailersFragment;
+import com.example.yokaa.movieapp.R;
 
 /**
  * Created by yokaa on 11/25/16.

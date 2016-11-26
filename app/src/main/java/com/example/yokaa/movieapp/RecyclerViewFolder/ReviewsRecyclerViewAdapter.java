@@ -1,18 +1,14 @@
 package com.example.yokaa.movieapp.RecyclerViewFolder;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.yokaa.movieapp.R;
-import com.example.yokaa.movieapp.Reviews;
-import com.example.yokaa.movieapp.Trailer;
+import com.example.yokaa.movieapp.MovieDetails.Reviews;
 
 import java.util.ArrayList;
 

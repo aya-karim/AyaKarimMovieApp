@@ -1,7 +1,6 @@
 package com.example.yokaa.movieapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
@@ -21,6 +20,7 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.example.yokaa.movieapp.DataBase.dbHelper;
+import com.example.yokaa.movieapp.TabletView.DataListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

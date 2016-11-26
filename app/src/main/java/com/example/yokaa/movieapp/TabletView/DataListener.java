@@ -1,4 +1,4 @@
-package com.example.yokaa.movieapp;
+package com.example.yokaa.movieapp.TabletView;
 
 import android.os.Bundle;
 

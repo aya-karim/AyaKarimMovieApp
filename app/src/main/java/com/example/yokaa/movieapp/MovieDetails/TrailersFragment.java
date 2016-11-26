@@ -1,19 +1,14 @@
-package com.example.yokaa.movieapp;
+package com.example.yokaa.movieapp.MovieDetails;
 
 import android.annotation.SuppressLint;
-import android.app.DownloadManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,15 +16,15 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.yokaa.movieapp.R;
 import com.example.yokaa.movieapp.RecyclerViewFolder.RecyclerViewAdapter;
+import com.example.yokaa.movieapp.Volley.VolleySingletone;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by yokaa on 11/17/16.
@@ -61,7 +56,7 @@ public class TrailersFragment extends Fragment {
         recyclerView = (RecyclerView)rootView.findViewById(R.id.trailerList);
 
         int movieID = bundle.getInt("id");
-        RequestQueue requestQueue=VolleySingletone.getInstance().getmRequestQueue();
+        RequestQueue requestQueue= VolleySingletone.getInstance().getmRequestQueue();
         //http://api.themoviedb.org/3/movie/{id}/videos?api_key=d751b799766ad8a466932e14190daf8a
         StringRequest request = new StringRequest(Request.Method.GET,"http://api.themoviedb.org/3/movie/"+movieID+"/videos?api_key=d751b799766ad8a466932e14190daf8a", new Response.Listener<String>() {
             @Override

@@ -1,16 +1,12 @@
-package com.example.yokaa.movieapp;
+package com.example.yokaa.movieapp.MovieDetails;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import java.lang.annotation.Retention;
+import com.example.yokaa.movieapp.R;
+import com.example.yokaa.movieapp.TabletView.TabletDetailFragment;
 
 public class DetailActivity extends AppCompatActivity {
 
