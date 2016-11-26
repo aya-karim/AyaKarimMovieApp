@@ -1,5 +1,7 @@
 package com.example.yokaa.movieapp;
 
+import android.os.Bundle;
+
 import java.util.ArrayList;
 
 /**
@@ -8,5 +10,5 @@ import java.util.ArrayList;
 
 public interface DataListener {
 
-     void setData(ArrayList<jasonMovieObj> Movies , int index);
+     void setData(Bundle bundle);
 }

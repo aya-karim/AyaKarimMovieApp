@@ -90,6 +90,24 @@ public class dbHelper extends SQLiteOpenHelper {
       //  mSQLiteDatabase.close();
         return mCursor;
     }
+    public Cursor getMovie()
+    {
+        mSQLiteDatabase = getReadableDatabase();
+        Cursor mCursor = mSQLiteDatabase.rawQuery("select * from " + mDatabaseFavoriteList.TABLE_Movies+" where "+
+                mDatabaseFavoriteList.MOVIE_TITLE+" = "+ "'"+movieObj.getMovieTitle()+"'", null);
+        //Cursor c = MyData.rawQuery("SELECT * FROM " + tableName + " where Category = '" +categoryex + "'" , null);
+
+        mCursor.moveToFirst();
+        //  mSQLiteDatabase.close();
+        return mCursor;
+
+    }
+    public void deleteMovie()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(mDatabaseFavoriteList.TABLE_Movies, mDatabaseFavoriteList.MOVIE_TITLE + " = ?", new String[] { movieObj.getMovieTitle()});
+
+    }
 //    public int numberofRecords()
 //    {
 //        mSQLiteDatabase=getReadableDatabase();

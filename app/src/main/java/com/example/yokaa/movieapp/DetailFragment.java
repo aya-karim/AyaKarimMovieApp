@@ -2,6 +2,7 @@ package com.example.yokaa.movieapp;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -47,6 +48,8 @@ public class DetailFragment extends Fragment {
     TextView overView ;
     TextView movieRating ;
     Button AddToFavorite;
+    Button RemoveFromFavorites;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,10 @@ public class DetailFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+
+        RemoveFromFavorites=(Button)rootView.findViewById(R.id.DeleteFromFavorite);
+        AddToFavorite=(Button)rootView.findViewById(R.id.AddToFavorite);
+        mDataBaseHelper = new dbHelper(getContext());
         if (bundle != null)
         {
             movie.userRating=bundle.getInt("userRating");
@@ -69,7 +76,8 @@ public class DetailFragment extends Fragment {
             movie.overView=bundle.get("overView").toString();
             movie.releaseDate=bundle.get("releaseDate").toString();
             movie.movieTitle=bundle.get("movieTitle").toString();
-            Toast.makeText(getActivity(),"intent loaded",Toast.LENGTH_LONG);
+            movie.id =bundle.getInt("id");
+            mFavoriteMovie=movie;
 
             MovieImageView = (ImageView)rootView.findViewById(R.id.imageView);
             movieTitle = (TextView)rootView.findViewById(R.id.txtMovieTitle);
@@ -83,31 +91,57 @@ public class DetailFragment extends Fragment {
             overView.setText( movie.overView);
             movieRating.setText(String.valueOf(movie.userRating));
 
-            AddToFavorite=(Button)rootView.findViewById(R.id.AddToFavorite);
+            if (checkMovieIsInFavorites())
+            {
+               // Toast.makeText(getActivity(),"Movie Already exists in favorites", Toast.LENGTH_SHORT).show();
+                RemoveFromFavorites.setVisibility(View.VISIBLE);
+            }
+            else {
+                AddToFavorite.setVisibility(View.VISIBLE);
+            }
             AddToFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
+                public void onClick(View v)
+                {
+
+                    mDataBaseHelper.setMovie(mFavoriteMovie);
+                    try {
+
+                            String i = mDataBaseHelper.insertMovie();
+                            Toast.makeText(getActivity(), "Movie Added to your favorites", Toast.LENGTH_LONG).show();
+
+                    }catch (Exception e)
+                    {
+                        Toast.makeText(getActivity(),"Couldn't Add Movie", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            RemoveFromFavorites.setOnClickListener(new View.OnClickListener() {
+                @Override
                 public void onClick(View v) {
-            mFavoriteMovie=movie;
-            mDataBaseHelper = new dbHelper(getContext());
+                    mDataBaseHelper.setMovie(mFavoriteMovie);
+                    try {
+                        mDataBaseHelper.deleteMovie();
 
+                    }catch (Exception e){
+                        Toast.makeText(getActivity(),"Couldn't Remove Movie", Toast.LENGTH_SHORT).show();
 
-            mDataBaseHelper.setMovie(mFavoriteMovie);
-
-            try {
-                String i = mDataBaseHelper.insertMovie();
-                Toast.makeText(getActivity(),"Movie Added to your favorites", Toast.LENGTH_LONG).show();
-                Log.i("eshta3'al",i);
-
-
-            }catch (Exception e)
-            {
-                Toast.makeText(getActivity(),"Couldn't Add Movie", Toast.LENGTH_SHORT).show();
-                Log.i("mashta3'alsh",e.getMessage());
-            }
+                    }
                 }
             });
         }
         return rootView;
+    }
+
+    public boolean checkMovieIsInFavorites()
+    {
+        mDataBaseHelper.setMovie(mFavoriteMovie);
+        Cursor c= mDataBaseHelper.getMovie();
+        if (c.getCount()!=0)
+            return true;
+        else
+            return false;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -118,35 +152,6 @@ public class DetailFragment extends Fragment {
         inflater.inflate(R.menu.detail_menu,menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId()== R.id.AddToFavorite)
-        {
-//            mFavoriteMovie=movie;
-//            mDataBaseHelper = new dbHelper(getContext());
-//
-//
-//            mDataBaseHelper.setMovie(mFavoriteMovie);
-//
-//            try {
-//                String i = mDataBaseHelper.insertMovie();
-//             Toast.makeText(getActivity(),"Movie Added to your favorites", Toast.LENGTH_LONG).show();
-//              Log.i("eshta3'al",i);
-//
-//
-//            }catch (Exception e)
-//            {
-//                Toast.makeText(getActivity(),"Couldn't Add Movie", Toast.LENGTH_SHORT).show();
-//                Log.i("mashta3'alsh",e.getMessage());
-//            }
-        }
-        else
-            Toast.makeText(getContext(),"Nothing Selected", Toast.LENGTH_SHORT).show();
-
-
-        return super.onOptionsItemSelected(item);
-    }
 /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated

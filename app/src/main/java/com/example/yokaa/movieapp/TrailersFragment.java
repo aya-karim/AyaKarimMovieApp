@@ -52,6 +52,7 @@ public class TrailersFragment extends Fragment {
     public TrailersFragment(Bundle bundle) {
         this.bundle=bundle;
     }
+    public TrailersFragment(){}
 
     @Nullable
     @Override

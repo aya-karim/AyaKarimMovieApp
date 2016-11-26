@@ -2,6 +2,7 @@ package com.example.yokaa.movieapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -37,25 +38,10 @@ public class main_fragment extends Fragment {
 
 
     // TODO: Rename parameter arguments, choose names that match
-
-
-    // TODO: Rename and change types of parameters
-
+    SharedPreferences sharedPreferences;
     jasonMovieObj JMovie;
     String sort= "popular";
-
-    ArrayList<jasonMovieObj> jMoviesList;
-    public main_fragment() {
-        // Required empty public constructor
-    }
-
-
-
-    // TODO: Rename and change types and number of parameters
-
     List<jasonMovieObj> mMovieList = new ArrayList<>();
-
-
     movieAdapter MovieAdapt;
     FetchMovies fetch;
     GridView MoviesListGV;
@@ -63,12 +49,86 @@ public class main_fragment extends Fragment {
     dbHelper mfavoriteListDB;
     jasonMovieObj mFavoriteMovie;
     DataListener mDataListener;
+    SharedPreferences.Editor editor;
+    int movieIndex;
+    // TODO: Rename and change types of parameters
+
+
+
+    ArrayList<jasonMovieObj> jMoviesList;
+
+    public main_fragment() {
+        // Required empty public constructor
+//        sharedPreferences= getActivity().getSharedPreferences("MyData",Context.MODE_PRIVATE);
+//        editor = sharedPreferences.edit();
+//        editor.putString("Sort",sort);
+
+    }
+
+
+
+    // TODO: Rename and change types and number of parameters
+
+
 
     public void setmDataListener (DataListener listener)
     {
         this.mDataListener=listener;
     }
 
+    public void getFavoritList()
+    {
+        jMoviesList= new ArrayList<jasonMovieObj>();
+        mfavoriteListDB = new dbHelper(getContext());
+        Cursor mCursor = mfavoriteListDB.getAllData(); //getting Data from db
+        int numOfRecords = mCursor.getCount();
+        if (numOfRecords==0)
+        {
+            Toast.makeText(getActivity(),"No Data yet in your Favorite List", Toast.LENGTH_LONG).show();
+            return;
+        }
+        for(int i =0 ;i <numOfRecords; i++ )
+        {
+            mFavoriteMovie = new jasonMovieObj();
+            mFavoriteMovie.movieTitle=mCursor.getString(1);
+            mFavoriteMovie.imgPath=mCursor.getString(3);
+            mFavoriteMovie.overView=mCursor.getString(2);
+            mFavoriteMovie.releaseDate= mCursor.getString(4);
+            mFavoriteMovie.userRating = Integer.parseInt(mCursor.getString(5));
+            mFavoriteMovie.id=Integer.parseInt(mCursor.getString(6));
+
+            jMoviesList.add(mFavoriteMovie);
+            mCursor.moveToNext();
+
+        }
+        MovieAdapt = new movieAdapter(getActivity(),jMoviesList);
+        MoviesListGV =  (GridView)v.findViewById(R.id.movieGridView);
+        MoviesListGV.setAdapter(MovieAdapt);
+        MoviesListGV.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                Bundle movieBundle = new Bundle();
+
+                movieIndex = position;
+                movieBundle.putString("movieTitle",jMoviesList.get(movieIndex).movieTitle);
+                movieBundle.putString("releaseDate",jMoviesList.get(movieIndex).releaseDate);
+                movieBundle.putString("overView",jMoviesList.get(movieIndex).overView);
+                movieBundle.putString("imgPath",jMoviesList.get(movieIndex).imgPath);
+                movieBundle.putInt("userRating",jMoviesList.get(movieIndex).userRating);
+                movieBundle.putInt("id",jMoviesList.get(movieIndex).id);
+//                Intent i = new Intent(getActivity(), DetailActivity.class).putExtra("movie",movieBundle);
+
+
+                // i.putExtra("movieInfo", movieBundle);
+                //startActivity(i);
+                mDataListener.setData(movieBundle);
+
+            }
+        });
+
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,49 +149,40 @@ public class main_fragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-       if (item.getItemId()==R.id.popular)
+       if (item.getItemId()==R.id.popular && isNetworkAvailable(getActivity())==true)
        {
            sort="popular";
+           sharedPreferences= getActivity().getSharedPreferences("MyData",Context.MODE_PRIVATE);
+           editor = sharedPreferences.edit();
+           editor.putString("Sort",sort);
+           editor.commit();
            new FetchMovies().execute(sort);
 
        }
-        else if (item.getItemId()==R.id.TopRated)
+        else if (item.getItemId()==R.id.TopRated && isNetworkAvailable(getActivity())==true)
        {
            sort="top_rated";
+           sharedPreferences= getActivity().getSharedPreferences("MyData",Context.MODE_PRIVATE);
+           editor = sharedPreferences.edit();
+           editor.putString("Sort",sort);
+           editor.commit();
+
            new FetchMovies().execute(sort);
        }
         else  if (item.getItemId()==R.id.FavoriteList)
        {
-           jMoviesList= new ArrayList<jasonMovieObj>();
-           mfavoriteListDB = new dbHelper(getContext());
-           Cursor mCursor = mfavoriteListDB.getAllData(); //getting Data from db
-           int numOfRecords = mCursor.getCount();
-           for(int i =0 ;i <numOfRecords; i++ )
-           {
-               mFavoriteMovie = new jasonMovieObj();
-               mFavoriteMovie.movieTitle=mCursor.getString(1);
-               mFavoriteMovie.imgPath=mCursor.getString(3);
-               mFavoriteMovie.overView=mCursor.getString(2);
-               mFavoriteMovie.releaseDate= mCursor.getString(4);
-               mFavoriteMovie.userRating = Integer.parseInt(mCursor.getString(5));
+           sort="FavoriteList";
+           sharedPreferences= getActivity().getSharedPreferences("MyData",Context.MODE_PRIVATE);
+           editor = sharedPreferences.edit();
+           editor.putString("Sort",sort);
+           editor.commit();
 
-               jMoviesList.add(mFavoriteMovie);
-               mCursor.moveToNext();
-//               try {
-//                   mFavoriteMovie.userRating= Integer.parseInt(mCursor.getString(5));
-//
-//                   jMoviesList.add(mFavoriteMovie);
-//               }catch (Exception e)
-//               {
-//                   Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
-//               }
-           }
-           MovieAdapt = new movieAdapter(getActivity(),jMoviesList);
-           MoviesListGV =  (GridView)v.findViewById(R.id.movieGridView);
-           MoviesListGV.setAdapter(MovieAdapt);
 
+           getFavoritList();
        }
-                return super.onOptionsItemSelected(item);
+        else
+           Toast.makeText(getActivity(), "NO NETWORK", Toast.LENGTH_LONG).show();
+        return super.onOptionsItemSelected(item);
         }
 
     @Override
@@ -143,11 +194,33 @@ public class main_fragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_main_fragment, container, false);
         if (isNetworkAvailable(getActivity())==true)
         {
-            fetch = new FetchMovies();
-            fetch.execute(sort);
+            sharedPreferences= getActivity().getSharedPreferences("MyData",Context.MODE_PRIVATE);
+            sort=sharedPreferences.getString("Sort","FirstTime");
+            if (sort.compareTo("FirstTime")==0)
+            {
+                sort="popular";
+                fetch = new FetchMovies();
+                fetch.execute(sort);
+            }
+
+            else if (sort.compareTo("FavoriteList") ==0) //FavoriteList
+
+            {
+                getFavoritList();
+            }
+            else{
+                fetch = new FetchMovies();
+                fetch.execute(sort);
+            }
         }
         else
-        Toast.makeText(getActivity(),"No network Availale",Toast.LENGTH_LONG).show();
+        {
+
+            getFavoritList();
+
+            Toast.makeText(getActivity(), "No network Availale", Toast.LENGTH_LONG).show();
+        }
+
 
         return v;
     }
@@ -248,22 +321,22 @@ public class main_fragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-//
-//                    Bundle movieBundle = new Bundle();
-//
-//                    int movieIndex = position;
-//                    movieBundle.putString("movieTitle",jMoviesList.get(movieIndex).movieTitle);
-//                    movieBundle.putString("releaseDate",jMoviesList.get(movieIndex).releaseDate);
-//                    movieBundle.putString("overView",jMoviesList.get(movieIndex).overView);
-//                    movieBundle.putString("imgPath",jMoviesList.get(movieIndex).imgPath);
-//                    movieBundle.putInt("userRating",jMoviesList.get(movieIndex).userRating);
-//                    movieBundle.putInt("id",jMoviesList.get(movieIndex).id);
+
+                    Bundle movieBundle = new Bundle();
+
+                    movieIndex = position;
+                    movieBundle.putString("movieTitle",jMoviesList.get(movieIndex).movieTitle);
+                    movieBundle.putString("releaseDate",jMoviesList.get(movieIndex).releaseDate);
+                    movieBundle.putString("overView",jMoviesList.get(movieIndex).overView);
+                    movieBundle.putString("imgPath",jMoviesList.get(movieIndex).imgPath);
+                    movieBundle.putInt("userRating",jMoviesList.get(movieIndex).userRating);
+                    movieBundle.putInt("id",jMoviesList.get(movieIndex).id);
 //                    Intent i = new Intent(getActivity(), DetailActivity.class).putExtra("movie",movieBundle);
 
 
                    // i.putExtra("movieInfo", movieBundle);
                     //startActivity(i);
-                    mDataListener.setData(jMoviesList , position);
+                    mDataListener.setData(movieBundle);
 
                 }
             });

@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 public class TabletDetailFragment extends Fragment {
 public Bundle bundle;
     ViewPager pager = null;
-    TabletToDetailListener mListener;
 
     public TabletDetailFragment() {
         // Required empty public constructor

@@ -48,40 +48,17 @@ public class MainList extends AppCompatActivity implements DataListener {
 
 
     @Override
-    public void setData(ArrayList<jasonMovieObj> jMoviesList , int index) {
+    public void setData(Bundle movieBundle) {
 
         if (!mIstTwoPain)
         {
-            Bundle movieBundle = new Bundle();
-
-                    int movieIndex = index;
-                    movieBundle.putString("movieTitle",jMoviesList.get(movieIndex).movieTitle);
-                    movieBundle.putString("releaseDate",jMoviesList.get(movieIndex).releaseDate);
-                    movieBundle.putString("overView",jMoviesList.get(movieIndex).overView);
-                    movieBundle.putString("imgPath",jMoviesList.get(movieIndex).imgPath);
-                    movieBundle.putInt("userRating",jMoviesList.get(movieIndex).userRating);
-                    movieBundle.putInt("id",jMoviesList.get(movieIndex).id);
-                    Intent i = new Intent(this, DetailActivity.class).putExtra("movie",movieBundle);
-
-
-             i.putExtra("movieInfo", movieBundle);
+            Intent i = new Intent(this, DetailActivity.class).putExtra("movie",movieBundle);
+            i.putExtra("movieInfo", movieBundle);
             startActivity(i);
 
         }
         else {
             TabletDetailFragment Detail = new TabletDetailFragment();
-
-            Bundle movieBundle = new Bundle();
-
-            int movieIndex = index;
-            movieBundle.putString("movieTitle",jMoviesList.get(movieIndex).movieTitle);
-            movieBundle.putString("releaseDate",jMoviesList.get(movieIndex).releaseDate);
-            movieBundle.putString("overView",jMoviesList.get(movieIndex).overView);
-            movieBundle.putString("imgPath",jMoviesList.get(movieIndex).imgPath);
-            movieBundle.putInt("userRating",jMoviesList.get(movieIndex).userRating);
-            movieBundle.putInt("id",jMoviesList.get(movieIndex).id);
-
-
             Detail.setArguments(movieBundle);
             FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
             fragmentTransaction2.replace(R.id.FrameLayoutMain2,Detail);
