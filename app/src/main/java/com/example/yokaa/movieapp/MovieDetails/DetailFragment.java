@@ -109,8 +109,10 @@ public class DetailFragment extends Fragment {
                     mDataBaseHelper.setMovie(mFavoriteMovie);
                     try {
 
-                            String i = mDataBaseHelper.insertMovie();
-                            Toast.makeText(getActivity(), "Movie Added to your favorites", Toast.LENGTH_LONG).show();
+                        String i = mDataBaseHelper.insertMovie();
+                        Toast.makeText(getActivity(), "Movie Added to your favorites", Toast.LENGTH_LONG).show();
+                        AddToFavorite.setVisibility(View.INVISIBLE);
+                        RemoveFromFavorites.setVisibility(View.VISIBLE);
 
                     }catch (Exception e)
                     {
@@ -125,6 +127,8 @@ public class DetailFragment extends Fragment {
                     try {
                         mDataBaseHelper.deleteMovie();
                         Toast.makeText(getActivity(),"Movie Removed From favorits",Toast.LENGTH_SHORT).show();
+                        AddToFavorite.setVisibility(View.VISIBLE);
+                        RemoveFromFavorites.setVisibility(View.INVISIBLE);
 
                     }catch (Exception e){
                         Toast.makeText(getActivity(),"Couldn't Remove Movie", Toast.LENGTH_SHORT).show();

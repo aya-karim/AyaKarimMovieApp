@@ -76,17 +76,25 @@ public class main_fragment extends Fragment {
         this.mDataListener=listener;
     }
 
-    public void getFavoritList()
+    public boolean favoriteListIsEmpty()
     {
-        jMoviesList= new ArrayList<jasonMovieObj>();
         mfavoriteListDB = new dbHelper(getContext());
         Cursor mCursor = mfavoriteListDB.getAllData(); //getting Data from db
         int numOfRecords = mCursor.getCount();
         if (numOfRecords==0)
         {
             Toast.makeText(getActivity(),"No Data yet in your Favorite List", Toast.LENGTH_LONG).show();
-            return;
+            return true;
         }
+        return false;
+    }
+
+    public void getFavoritList()
+    {
+        jMoviesList= new ArrayList<jasonMovieObj>();
+        mfavoriteListDB = new dbHelper(getContext());
+        Cursor mCursor = mfavoriteListDB.getAllData(); //getting Data from db
+        int numOfRecords = mCursor.getCount();
         for(int i =0 ;i <numOfRecords; i++ )
         {
             mFavoriteMovie = new jasonMovieObj();
@@ -144,6 +152,7 @@ public class main_fragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
         inflater.inflate(R.menu.menu,menu);
     }
     @Override
@@ -177,7 +186,7 @@ public class main_fragment extends Fragment {
            editor.putString("Sort",sort);
            editor.commit();
 
-
+        if (!favoriteListIsEmpty())
            getFavoritList();
        }
         else
@@ -206,7 +215,8 @@ public class main_fragment extends Fragment {
             else if (sort.compareTo("FavoriteList") ==0) //FavoriteList
 
             {
-                getFavoritList();
+                if (!favoriteListIsEmpty())
+                    getFavoritList();
             }
             else{
                 fetch = new FetchMovies();
@@ -216,7 +226,8 @@ public class main_fragment extends Fragment {
         else
         {
 
-            getFavoritList();
+            if (!favoriteListIsEmpty())
+                getFavoritList();
 
             Toast.makeText(getActivity(), "No network Availale", Toast.LENGTH_LONG).show();
         }
